@@ -4,15 +4,15 @@ project("fclient")
 
 add_library(fclient SHARED
         # List C/C++ source files with relative paths to this CMakeLists.txt.
-         native-lib.cpp)
+        native-lib.cpp)
 
 target_link_libraries(fclient
         # List libraries link to the target library
         android
         spdlog
         mbedcrypto
-        log
-        ${log-lib})
+        ${log-lib}
+        log)
 
 add_library(spdlog STATIC IMPORTED)
 set_target_properties(spdlog PROPERTIES IMPORTED_LOCATION
@@ -22,10 +22,11 @@ target_include_directories(fclient PUBLIC
 
 
 add_library(mbedcrypto SHARED IMPORTED)
+
 set_target_properties(mbedcrypto PROPERTIES IMPORTED_LOCATION
         ${CMAKE_CURRENT_SOURCE_DIR}/../nativeLibs/${ANDROID_ABI}/library/libmbedcrypto.so)
 
 target_include_directories(fclient PUBLIC
-        /Users/alexs/AndroidStudioProjects/RPO_labs/libs/spdlog/spdlog/include
-        /Users/alexs/AndroidStudioProjects/RPO_labs/libs/mbedtls/mbedtls/include
+        С:/Users/alexs/AndroidStudioProjects/RPO_labs/libs/spdlog/spdlog/include
+        C:/Users/alexs/AndroidStudioProjects/RPO_labs/libs/mbedtls/mbedtls/include
 )
