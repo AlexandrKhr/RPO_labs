@@ -27,6 +27,6 @@ set_target_properties(mbedcrypto PROPERTIES IMPORTED_LOCATION
         ${CMAKE_CURRENT_SOURCE_DIR}/../nativeLibs/${ANDROID_ABI}/library/libmbedcrypto.so)
 
 target_include_directories(fclient PUBLIC
-        С:/Users/alexs/AndroidStudioProjects/RPO_labs/libs/spdlog/spdlog/include
-        C:/Users/alexs/AndroidStudioProjects/RPO_labs/libs/mbedtls/mbedtls/include
+        /Users/alexs/AndroidStudioProjects/RPO_labs/libs/spdlog/spdlog/include
+        /Users/alexs/AndroidStudioProjects/RPO_labs/libs/mbedtls/mbedtls/include
 )
