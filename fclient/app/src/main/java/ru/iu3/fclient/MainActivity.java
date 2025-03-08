@@ -16,8 +16,14 @@ import android.widget.Toast;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.io.IOUtils;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ru.iu3.fclient.databinding.ActivityMainBinding;
 
@@ -129,21 +135,59 @@ public class MainActivity extends AppCompatActivity implements TransactionEvents
         return hex;
     }
 
-    public void onButtonClick(View v)
-    {
-//        byte[] key = stringToHex("0123456789ABCDEF0123456789ABCDE0");
-//        byte[] enc = encrypt(key, stringToHex("000000000000000102"));
-//        byte[] dec = decrypt(key, enc);
-//        String s = new String(Hex.encodeHex(dec)).toUpperCase();
-//        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+//    public void onButtonClick(View v)
+//    {
+////        byte[] key = stringToHex("0123456789ABCDEF0123456789ABCDE0");
+////        byte[] enc = encrypt(key, stringToHex("000000000000000102"));
+////        byte[] dec = decrypt(key, enc);
+////        String s = new String(Hex.encodeHex(dec)).toUpperCase();
+////        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+//
+//        byte[] trd = stringToHex("9F0206000000000100");
+//        transaction(trd);
+//
+////        Intent it = new Intent(this, PinpadActivity.class);
+////        //startActivity(it);
+////        activityResultLauncher.launch(it);
+//    }
 
-        byte[] trd = stringToHex("9F0206000000000100");
-        transaction(trd);
-
-//        Intent it = new Intent(this, PinpadActivity.class);
-//        //startActivity(it);
-//        activityResultLauncher.launch(it);
+    public void onButtonClick(View v){
+        testHttpClient();
     }
+
+
+    protected void testHttpClient()
+    {
+        new Thread(() -> {
+            try {
+                HttpURLConnection uc = (HttpURLConnection) (new URL("http://10.0.2.2:8080/api/v1/title").openConnection());
+                InputStream inputStream = uc.getInputStream();
+                String html = IOUtils.toString(inputStream);
+                String title = getPageTitle(html);
+                runOnUiThread(() ->
+                {
+                    Toast.makeText(this, title, Toast.LENGTH_LONG).show();
+                });
+
+            } catch (Exception ex) {
+                Log.e("fapptag", "Http client fails", ex);
+            }
+        }).start();
+    }
+
+    protected String getPageTitle(String html) {
+        Pattern pattern = Pattern.compile("<title>(.+?)</title>", Pattern.DOTALL);
+        Matcher matcher = pattern.matcher(html);
+        String p;
+        if (matcher.find())
+            p = matcher.group(1);
+        else
+            p = "Not found";
+        return p;
+    }
+
+
+
 
 
 
